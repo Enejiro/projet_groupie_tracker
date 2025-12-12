@@ -8,14 +8,14 @@ import (
 )
 
 type Artist struct {
-	Name         string   `json:"name"`
-	Image        string   `json:"image"`
-	Members      []string `json:"members"`
-	Creation     int      `json:"creationDate"`
-	FirstAlbum   string   `json:"firstAlbum"`
-	Locations    string   `json:"locations"`
-	ConcertDates string   `json:"concertDates"`
-	Relations    string   `json:"relations"`
+	Name             string   `json:"name"`
+	Image            string   `json:"image"`
+	Members          []string `json:"members"`
+	Creation         int      `json:"creationDate"`
+	FirstAlbum       string   `json:"firstAlbum"`
+	Relation         []string `json:"datesLocations"`
+	ConcertDates     []string `json:"dates"`
+	ConcertLocations string   `json:"locations"`
 }
 
 func SearchArtist(id int) (*Artist, error) {
