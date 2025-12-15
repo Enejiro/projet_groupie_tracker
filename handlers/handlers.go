@@ -10,7 +10,7 @@ import (
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
     if r.URL.Path != "/" {
-        ErrorHandler(w, "Page non trouvée", 404)
+        ErrorHandler(w, 404, "Page non trouvée")
         return
     }
 
@@ -29,7 +29,7 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 
     tmpl, err := template.ParseFiles("templates/artists.html")
     if err != nil {
-        ErrorHandler(w, "Erreur template", 500)
+        ErrorHandler(w, 500, "Erreur template")
         fmt.Println("Erreur template:", err)
         return 
     }
@@ -43,25 +43,25 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 func ArtistDetailHandler(w http.ResponseWriter, r *http.Request) {
     idStr := r.URL.Query().Get("id")
     if idStr == "" {
-        ErrorHandler(w, "ID manquant", 400)
+        ErrorHandler(w, 400, "ID manquant")
         return 
     }
 
     id, err := strconv.Atoi(idStr)
     if err != nil {
-        ErrorHandler(w, "ID invalide", 400)
+        ErrorHandler(w, 400, "ID invalide")
         return 
     }
 
     artist := GetTestArtistByID(id)
     if artist == nil {
-        ErrorHandler(w, "Artiste non trouvé", 404)
+        ErrorHandler(w, 404, "Artiste non trouvé")
         return 
     }
 
     tmpl, err := template.ParseFiles("templates/artist-detail.html")
     if err != nil {
-        ErrorHandler(w, "Erreur template", 500)
+        ErrorHandler(w, 500, "Erreur template")
         return 
     }
     
