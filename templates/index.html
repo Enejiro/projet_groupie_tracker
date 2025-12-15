@@ -24,12 +24,9 @@
     <main>
         <h1>Accueil</h1>
         <section class="grid-container">
-            <button class="grid-btn"></button>
-            <button class="grid-btn"></button>
-            <button class="grid-btn"></button>
-            <button class="grid-btn"></button>
-            <button class="grid-btn"></button>
-            <button class="grid-btn"></button>
+            {{ range .Buttons }}
+                <button class="grid-btn">Bouton {{ . }}</button>
+            {{ end }}
         </section>
     </main>
 

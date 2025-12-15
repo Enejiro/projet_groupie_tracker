@@ -40,3 +40,20 @@ func SearchArtist(id int) (*Artist, error) {
 
 	return &artist, nil
 }
+
+var nbartists int
+
+func nbArtists() {
+	resp, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var artists []interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&artists); err != nil {
+		panic(err)
+	}
+
+	nbartists = len(artists)
+}
