@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 )
@@ -18,8 +17,8 @@ type Artist struct {
 	ConcertLocations string   `json:"locations"`
 }
 
-func SearchArtist(id int) (*Artist, error) {
-	url := fmt.Sprintf("https://groupietrackers.herokuapp.com/api/artists/%d", id)
+func SearchArtist() ([]Artist, error) {
+	url := "https://groupietrackers.herokuapp.com/api/artists"
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -32,28 +31,11 @@ func SearchArtist(id int) (*Artist, error) {
 		return nil, err
 	}
 
-	var artist Artist
+	var artist []Artist
 	err = json.Unmarshal(body, &artist)
 	if err != nil {
 		return nil, err
 	}
 
-	return &artist, nil
-}
-
-var nbartists int
-
-func nbArtists() {
-	resp, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	var artists []interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&artists); err != nil {
-		panic(err)
-	}
-
-	nbartists = len(artists)
+	return artist, nil
 }

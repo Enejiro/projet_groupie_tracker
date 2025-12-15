@@ -24,9 +24,12 @@
     <main>
         <h1>Accueil</h1>
         <section class="grid-container">
-            {{ range .Buttons }}
-                <button class="grid-btn">Bouton {{ . }}</button>
-            {{ end }}
+            {{ range . }}
+            <button class="grid-btn">
+                <img src={{.Image}} alt="Italian Trulli" class="grid-btn">
+            </button>
+            {{end}}
+         
         </section>
     </main>
 
