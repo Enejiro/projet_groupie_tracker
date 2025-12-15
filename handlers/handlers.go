@@ -5,6 +5,7 @@ import (
     "html/template"
     "net/http"
     "projet_groupie_tracker/models"
+    "strconv"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
