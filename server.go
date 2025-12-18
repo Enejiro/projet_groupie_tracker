@@ -16,6 +16,25 @@ func StartServer() {
 
 	})
 
+	http.HandleFunc("/map", func(w http.ResponseWriter, r *http.Request) {
+		tmpl := template.Must(template.ParseFiles("templates/map.html"))
+		tmpl.Execute(w, artists)
+
+	})
+
+	http.HandleFunc("/artistes", func(w http.ResponseWriter, r *http.Request) {
+		tmpl := template.Must(template.ParseFiles("templates/artistes.html"))
+		tmpl.Execute(w, artists)
+
+	})
+
+	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
+		tmpl := template.Must(template.ParseFiles("templates/contact.html"))
+		tmpl.Execute(w, artists)
+
+	})
+
+
 	css := http.FileServer(http.Dir("css"))
 	http.Handle("/css/", http.StripPrefix("/css/", css))
 
