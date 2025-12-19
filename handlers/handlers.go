@@ -15,7 +15,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("templates/home.html")
 	if err != nil {
-		http.Error(w, "Erreur template", 500)
+		http.Error(w, "Erreur lors du chargement de la page", 500)
 		return
 	}
 
@@ -23,7 +23,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
-	artists := GetTestArtists()
+	artists := GetTestArtists()                   // à remplacer par l'API //
 
 	tmpl, err := template.ParseFiles("templates/artists.html")
 	if err != nil {
@@ -51,7 +51,7 @@ func ArtistDetailHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	artist := GetTestArtistByID(id)
+	artist := GetTestArtistByID(id)  // à remplacer par l'API // 
 	if artist == nil {
 		ErrorHandler(w, 404, "Artiste non trouvé")
 		return
