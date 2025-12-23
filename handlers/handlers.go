@@ -3,7 +3,7 @@ package handlers
 import (
     "html/template"
     "net/http"
-    "projet_groupie_tracker/models"
+    "groupie-tracker/models"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
