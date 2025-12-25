@@ -2,75 +2,314 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erreur {{ .Status }} - Groupie Tracker</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #ffc6d3;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
         }
+
         .error-container {
-            background: white;
-            padding: 50px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 500px;
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 60px;
         }
+
+        .error-content {
+            flex: 1;
+        }
+
         .error-code {
-            font-size: 80px;
-            font-weight: bold;
-            color: #e74c3c;
-            margin: 0;
-        }
-        .error-message {
             font-size: 24px;
-            color: #333;
-            margin: 20px 0;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 20px;
         }
+
+        .error-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
         .error-description {
-            color: #666;
-            margin: 20px 0;
+            font-size: 16px;
+            color: #4a4a4a;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 450px;
         }
-        .back-link {
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
             display: inline-block;
-            margin-top: 30px;
-            padding: 12px 24px;
-            background-color: #3498db;
-            color: white;
+            padding: 14px 32px;
             text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
-        .back-link:hover {
-            background-color: #2980b9;
+
+        .btn-primary {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #333;
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #1a1a1a;
+            border: 2px solid #1a1a1a;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .vinyl-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .vinyl-wrapper {
+            position: relative;
+            width: 350px;
+            height: 350px;
+        }
+
+        /* Base du tourne-disque */
+        .turntable-base {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Plateau du tourne-disque */
+        .platter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: 280px;
+            background: #d4d4d4;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Vinyle posé sur le plateau */
+        .vinyl {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: #2d1b2e;
+            overflow: hidden;
+        }
+
+        /* Lignes horizontales du vinyle */
+        .vinyl::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 3px,
+                rgba(139, 90, 142, 0.3) 3px,
+                rgba(139, 90, 142, 0.3) 6px
+            );
+        }
+
+        /* Centre du vinyle */
+        .vinyl-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: #ffc6d3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .vinyl-hole {
+            width: 30px;
+            height: 30px;
+            background: #2d1b2e;
+            border-radius: 50%;
+        }
+
+        /* Bras de lecture */
+        .tonearm-base {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            width: 20px;
+            height: 20px;
+            background: #5a3a5c;
+            border-radius: 50%;
+        }
+
+        .tonearm {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-35deg);
+            width: 6px;
+            height: 140px;
+            background: #5a3a5c;
+            border-radius: 3px;
+            transform-origin: top center;
+        }
+
+        .tonearm-head {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background: #8b5a8e;
+            border-radius: 50%;
+        }
+
+        /* Boutons de contrôle */
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-button {
+            width: 25px;
+            height: 25px;
+            background: #b0b0b0;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .error-container {
+                flex-direction: column;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .error-title {
+                font-size: 32px;
+            }
+
+            .error-description {
+                max-width: 100%;
+            }
+
+            .vinyl-wrapper {
+                width: 300px;
+                height: 300px;
+            }
+
+            .button-group {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="error-container">
-        <p class="error-code">{{ .Status }}</p>
-        
-        {{ if eq .Status 404 }}
-            <h1 class="error-message"> Page non trouvée</h1>
-            <p class="error-description">La page que vous recherchez n'existe pas ou a été déplacée.</p>
-        {{ else if eq .Status 400 }}
-            <h1 class="error-message"> Requête invalide</h1>
-            <p class="error-description">{{ .Message }}</p>
-        {{ else if eq .Status 500 }}
-            <h1 class="error-message"> Erreur serveur</h1>
-            <p class="error-description">Une erreur s'est produite. Veuillez réessayer plus tard.</p>
-        {{ else }}
-            <h1 class="error-message"> Erreur</h1>
-            <p class="error-description">{{ .Message }}</p>
-        {{ end }}
-        
-        <a href="/" class="back-link">← Retour à l'accueil</a>
-        <a href="/artists" class="back-link">Voir les artistes</a>
+        <div class="error-content">
+            <div class="error-code">Erreur {{ .Status }}</div>
+
+            {{ if eq .Status 404 }}
+                <h1 class="error-title">Cette page n'existe plus.</h1>
+                <p class="error-description">
+                    Le vinyle que vous cherchez semble avoir été égaré. Retournez à l'accueil ou explorez notre collection d'artistes.
+                </p>
+            {{ else if eq .Status 400 }}
+                <h1 class="error-title">Paramètres invalides.</h1>
+                <p class="error-description">{{ .Message }}</p>
+            {{ else if eq .Status 500 }}
+                <h1 class="error-title">Erreur technique.</h1>
+                <p class="error-description">
+                    Notre platine rencontre un problème technique. Nous y travaillons activement.
+                </p>
+            {{ else }}
+                <h1 class="error-title">Une erreur est survenue.</h1>
+                <p class="error-description">{{ .Message }}</p>
+            {{ end }}
+
+            <div class="button-group">
+                <a href="/" class="btn btn-primary">RETOUR</a>
+                <a href="/artists" class="btn btn-secondary">VOIR LES ARTISTES</a>
+            </div>
+        </div>
+
+        <div class="vinyl-container">
+            <div class="vinyl-wrapper">
+                <div class="turntable-base">
+                    <div class="platter">
+                        <div class="vinyl">
+                            <div class="vinyl-center">
+                                <div class="vinyl-hole"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tonearm-base">
+                        <div class="tonearm">
+                            <div class="tonearm-head"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <div class="control-button"></div>
+                        <div class="control-button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
