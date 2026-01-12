@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func _Handler() {
@@ -24,8 +25,11 @@ func _Handler() {
 	})
 
 	http.HandleFunc("/artistes", func(w http.ResponseWriter, r *http.Request) {
+		idStr := r.URL.Query().Get("id")
+		id, _ := strconv.Atoi(idStr)
+		artist, _ := getOneArtist(id)
 		tmpl := template.Must(template.ParseFiles("templates/artistes.html"))
-		_ = tmpl.Execute(w, artists)
+		_ = tmpl.Execute(w, artist)
 	})
 
 	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {

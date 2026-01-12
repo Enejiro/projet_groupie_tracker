@@ -2,11 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 )
 
 type Artist struct {
+	ID               int      `json:"id"`
 	Name             string   `json:"name"`
 	Image            string   `json:"image"`
 	Members          []string `json:"members"`
@@ -15,6 +17,28 @@ type Artist struct {
 	Relation         []string `json:"datesLocations"`
 	ConcertDates     []string `json:"dates"`
 	ConcertLocations string   `json:"locations"`
+}
+
+func getOneArtist(id int) (Artist, error) {
+	url := fmt.Sprintf("https://groupietrackers.herokuapp.com/api/artists/%d", id)
+	resp, err := http.Get(url)
+	if err != nil {
+		return Artist{}, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return Artist{}, err
+	}
+
+	var artist Artist
+	err = json.Unmarshal(body, &artist)
+	if err != nil {
+		return Artist{}, err
+	}
+
+	return artist, nil
 }
 
 func SearchArtist() ([]Artist, error) {

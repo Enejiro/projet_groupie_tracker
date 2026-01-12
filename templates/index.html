@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/page.css" />
 </head>
+
 <body>
     <button id="sidebar-toggle" class="sidebar-toggle">☰</button>
     <aside id="sidebar" class="sidebar">
@@ -26,14 +28,16 @@
         <h1>Accueil</h1>
         <section class="grid-container">
             {{ range . }}
-            <button class="grid-btn">
-                <img src={{.Image}} alt="Italian Trulli" class="grid-btn">
-            </button>
+            <a href="http://localhost:8080/artistes?id={{.ID}}">
+                <button class="grid-btn">
+                    <img src={{.Image}} alt="Italian Trulli" class="grid-btn">
+                </button>
+            </a>
             {{end}}
-         
         </section>
     </main>
 
     <script src="/templates/js/sidebar.js" defer></script>
 </body>
+
 </html>
