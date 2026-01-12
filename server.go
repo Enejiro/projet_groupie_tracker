@@ -1,46 +1,20 @@
 package main
 
 import (
-	"html/template"
 	"log"
 	"net/http"
 )
 
 func StartServer() {
+	// Routes HTML
+	_Handler()
 
-	artists, _ := SearchArtist()
+	// Fichiers statiques
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
+	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("js"))))
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("templates/index.html"))
-		tmpl.Execute(w, artists)
-
-	})
-
-	http.HandleFunc("/map", func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("templates/map.html"))
-		tmpl.Execute(w, artists)
-
-	})
-
-	http.HandleFunc("/artistes", func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("templates/artistes.html"))
-		tmpl.Execute(w, artists)
-
-	})
-
-	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("templates/contact.html"))
-		tmpl.Execute(w, artists)
-
-	})
-
-
-	css := http.FileServer(http.Dir("css"))
-	http.Handle("/css/", http.StripPrefix("/css/", css))
-
-	log.Println("Serveur en écoute sur https://localhost:8080")
+	log.Println("Serveur en écoute sur http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatalf("Erreur au lancement du serveur: %v", err)
+		log.Fatal(err)
 	}
-
 }
