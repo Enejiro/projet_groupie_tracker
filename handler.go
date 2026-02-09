@@ -6,10 +6,16 @@ import (
 	"net/http"
 	"strconv"
 )
+//ErrorData represents the data passed to the error template.
+//Status: HTTP code (404, 400, 500, etc.).
+//Message: optional custom error message.
 type ErrorData struct {
     Status  int
     Message string
 }
+//showError displays a custom error page with the HTTP code and message provided.
+//It loads the error.html template and injects the error data into it.
+//If the template fails, it displays a standard HTTP error.
 func showError(w http.ResponseWriter, status int, message string) {
 	w.WriteHeader(status)
 
@@ -27,6 +33,9 @@ func showError(w http.ResponseWriter, status int, message string) {
 	tmpl.Execute(w, data)
 }
 
+//_Handler registers all HTTP routes for the application.
+//Retrieves artists from the API at startup and configures four routes:
+//“/” (home), “/map” (map), “/artists” (artist details), “/contact” (contact).
 func _Handler() {
 
 	artists, err := SearchArtist()
@@ -34,6 +43,7 @@ func _Handler() {
 		log.Fatalf("Erreur SearchArtist: %v", err)
 	}
 
+//Route home page: displays the grid of all artists.
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
 			showError(w, 404, "")
@@ -47,6 +57,7 @@ func _Handler() {
 		}
 	})
 
+//Route page map: displays the interactive concert map.
 	http.HandleFunc("/map", func(w http.ResponseWriter, r *http.Request) {
 		tmpl := template.Must(template.ParseFiles("templates/map.html"))
 		err = tmpl.Execute(w, artists)
@@ -55,6 +66,8 @@ func _Handler() {
 		}
 	})
 
+//Artist page route: displays details about an artist based on their ID.
+// Validates the ID (present, numeric, positive, <= 52) before retrieving the data.
 	http.HandleFunc("/artistes", func(w http.ResponseWriter, r *http.Request) {
 		idStr := r.URL.Query().Get("id")
 		if idStr == "" {
@@ -91,6 +104,7 @@ func _Handler() {
 		}
 	})
 
+// Contact page route: displays the contact page.
 	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
 		tmpl := template.Must(template.ParseFiles("templates/contact.html"))
 		err = tmpl.Execute(w, artists)

@@ -5,11 +5,14 @@ import (
 	"net/http"
 )
 
+//StartServer starts the HTTP server on port 8080
+// Configures routes via _Handler() and serves static files (CSS/JS)
+// Stops the program in case of a startup error
 func StartServer() {
 	// Routes HTML
 	_Handler()
 
-	// Fichiers statiques
+	// Static files
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("js"))))
 

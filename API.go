@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+//Artist represents an artist/band with their information
+//Relationships contains a map of concert venues (key) and their dates (value)
 type Artist struct {
 	ID           int      `json:"id"`
 	Name         string   `json:"name"`
@@ -18,11 +20,16 @@ type Artist struct {
 	Relations    map[string][]string
 }
 
+//Relation represents an artist's concert dates and locations
+// DatesLocations is a map where the key is the location and the value is the list of dates
 type Relation struct {
 	ID             int                 `json:"id"`
 	DatesLocations map[string][]string `json:"datesLocations"`
 }
 
+//getOneArtist retrieves complete information about an artist by their ID
+// Makes 2 API requests: one for the artist, another for their relationships (dates/locations)
+// Returns the artist with all their data or an error if unsuccessful
 func getOneArtist(id int) (Artist, error) {
 	url := fmt.Sprintf("https://groupietrackers.herokuapp.com/api/artists/%d", id)
 	resp, err := http.Get(url)
@@ -59,7 +66,7 @@ func getOneArtist(id int) (Artist, error) {
 		return Artist{}, err
 	}
 
-	// Construire la page
+// Build the complete page with relationships
 	page := Artist{
 		Image:      artist.Image,
 		Name:       artist.Name,
@@ -71,6 +78,10 @@ func getOneArtist(id int) (Artist, error) {
 
 	return page, nil
 }
+
+//SearchArtist retrieves the complete list of all artists from the API
+// Used to display the home page with the artist grid
+// Returns an array of artists or an error if unsuccessful
 
 func SearchArtist() ([]Artist, error) {
 	url := "https://groupietrackers.herokuapp.com/api/artists"
