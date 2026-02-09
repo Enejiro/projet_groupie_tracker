@@ -20,16 +20,36 @@
 
     <main>
         <h1>Accueil</h1>
+
+        <!-- Barre de recherche ajoutée -->
+        <input type="text" id="searchInput" placeholder="Rechercher un artiste..." />
+
         <section class="grid-container">
             {{ range . }}
-            <a href="http://localhost:8080/artistes?id={{.ID}}">
+            <a href="http://localhost:8080/artistes?id={{.ID}}" class="grid-item" data-name="{{.Name}}">
                 <button class="grid-btn">
-                    <img src={{.Image}} alt="Italian Trulli" class="grid-btn">
+                    <img src="{{.Image}}" alt="{{.Name}}" class="grid-btn">
                 </button>
             </a>
             {{end}}
         </section>
     </main>
+
+    <script>
+        // Script de filtrage
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("searchInput");
+            const gridItems = document.querySelectorAll(".grid-item");
+
+            searchInput.addEventListener("input", () => {
+                const query = searchInput.value.toLowerCase();
+                gridItems.forEach(item => {
+                    const name = item.dataset.name.toLowerCase();
+                    item.style.display = name.includes(query) ? "" : "none";
+                });
+            });
+        });
+    </script>
 
     <script src="/templates/js/sidebar.js" defer></script>
 </body>

@@ -70,3 +70,21 @@
     padding: 15px;
     border-left: 3px solid rgb(255, 0, 0);
 }
+
+/* Barre de recherche */
+#searchInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Optionnel : améliore la grille lors du filtrage */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
