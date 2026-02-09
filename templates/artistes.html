@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 
+<!-- Creates a page dedicated to an artist with a banner, information, and concerts. It dynamically displays data such as members, creation date, and albums. Buttons allow you to organize and display various information about the artist. -->
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,8 +39,20 @@
             <button class="info-btn">First Album</button>
             <div class="info-content">{{.FirstAlbum}}</div>
 
-            <button class="info-btn">Concert City</button>
-            <div class="info-content">{{.city}}</div>
+            <button class="info-btn">Concerts</button>
+<div class="info-content">
+    {{if .Relations}}
+        {{range $location, $dates := .Relations}}
+            <strong> {{$location}}</strong><br>
+            {{range $dates}}
+                • {{.}}<br>
+            {{end}}
+            <br>
+        {{end}}
+    {{else}}
+        Aucun concert programmé
+    {{end}}
+</div>
 
         </section>
 
