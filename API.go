@@ -8,15 +8,19 @@ import (
 )
 
 type Artist struct {
-	ID               int      `json:"id"`
-	Name             string   `json:"name"`
-	Image            string   `json:"image"`
-	Members          []string `json:"members"`
-	Creation         int      `json:"creationDate"`
-	FirstAlbum       string   `json:"firstAlbum"`
-	Relation         []string `json:"datesLocations"`
-	ConcertDates     []string `json:"dates"`
-	ConcertLocations string   `json:"locations"`
+	ID           int      `json:"id"`
+	Name         string   `json:"name"`
+	Image        string   `json:"image"`
+	Members      []string `json:"members"`
+	Creation     int      `json:"creationDate"`
+	FirstAlbum   string   `json:"firstAlbum"`
+	RelationsURL string   `json:"relations"`
+	Relations    map[string][]string
+}
+
+type Relation struct {
+	ID             int                 `json:"id"`
+	DatesLocations map[string][]string `json:"datesLocations"`
 }
 
 func getOneArtist(id int) (Artist, error) {
@@ -38,7 +42,34 @@ func getOneArtist(id int) (Artist, error) {
 		return Artist{}, err
 	}
 
-	return artist, nil
+	relResp, err := http.Get(artist.RelationsURL)
+	if err != nil {
+		return Artist{}, err
+	}
+	defer relResp.Body.Close()
+
+	relBody, err := io.ReadAll(relResp.Body)
+	if err != nil {
+		return Artist{}, err
+	}
+
+	var relation Relation
+	err = json.Unmarshal(relBody, &relation)
+	if err != nil {
+		return Artist{}, err
+	}
+
+	// Construire la page
+	page := Artist{
+		Image:      artist.Image,
+		Name:       artist.Name,
+		Members:    artist.Members,
+		Creation:   artist.Creation,
+		FirstAlbum: artist.FirstAlbum,
+		Relations:  relation.DatesLocations,
+	}
+
+	return page, nil
 }
 
 func SearchArtist() ([]Artist, error) {
@@ -63,3 +94,4 @@ func SearchArtist() ([]Artist, error) {
 
 	return artist, nil
 }
+

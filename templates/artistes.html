@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,49 +9,42 @@
     <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/page.css" />
 </head>
+
 <body>
-    <button id="sidebar-toggle" class="sidebar-toggle">☰</button>
-    <aside id="sidebar" class="sidebar">
-        <nav>
-            <ul>
-                <li><a href="/">Accueil</a></li>
-                <li><a href="/artistes">Artistes</a></li>
-                <li><a href="/map">Map</a></li>
-                <li><a href="/contact">Contact</a></li>
-            </ul>
-        </nav>
-    </aside>
+    <nav class="top-nav">
+        <a href="/">Accueil</a>
+        <a href="/map">Map</a>
+        <a href="/contact">Contact</a>
+    </nav>
 
+    
     <main>
-        <h1>Artistes</h1>
-        <div>
-            <img src="{{.Image}}" alt="Image Artiste">
-        </div>
 
-        <table> 
-            <tr>
-                <th>Name</th>
-                <td>Nom du groupe</td>
-            </tr>
-            <tr>
-                <th>Members</th>
-                <td>Liste des membres</td>
-            </tr>
-            <tr>
-                <th>Group Creation</th>
-                <td>Année de création</td>
-            </tr>
-            <tr>
-                <th>1st Album</th>
-                <td>Nom du premier album</td>
-            </tr>
-            <tr>
-                <th>Concert</th>
-                <td>Informations sur les concerts</td>
-            </tr>
-        </table>
-    </main>
+    <!-- artist / BANNIÈRE -->
+    <section class="art" style="background-image: url('{{.Image}}');">
+        <h1 class="art-title">{{.Name}}</h1>
+    </section>
 
-    <script src="js/sidebar.js"></script>
+        <!-- INFOS ARTISTE -->
+        <section class="info-container">
+
+            <button  type="button" class="info-btn">Members</button>
+            <div class="info-content"><h1>{{range .Members}} {{.}}<br> {{end}}</h1></div>
+
+            <button class="info-btn">Group Creation</button>
+            <div class="info-content">{{.Creation}}</div>
+
+            <button class="info-btn">First Album</button>
+            <div class="info-content">{{.FirstAlbum}}</div>
+
+            <button class="info-btn">Concert City</button>
+            <div class="info-content">{{.city}}</div>
+
+        </section>
+
+</main>
+
+
 </body>
+
 </html>

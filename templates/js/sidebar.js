@@ -1,14 +1,15 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const openButton = document.getElementById("sidebar-toggle");
-    const closeButton = document.getElementById("sidebar-close");
-    const sidebar = document.getElementById("sidebar");
+document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".info-btn");
 
-    openButton.addEventListener("click", function () {
-        sidebar.classList.add("open");
-    });
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const content = btn.nextElementSibling;
 
-    closeButton.addEventListener("click", function () {
-        sidebar.classList.remove("open");
+            document.querySelectorAll(".info-content").forEach(c => {
+                if (c !== content) c.classList.remove("active");
+            });
+
+            content.classList.toggle("active");
+        });
     });
 });
-
